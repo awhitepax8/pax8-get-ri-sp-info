@@ -21,6 +21,10 @@ from botocore.exceptions import ClientError, NoCredentialsError
 def format_datetime(dt):
     """Format datetime object to readable string"""
     if dt:
+        # Handle if dt is already a string
+        if isinstance(dt, str):
+            return dt
+        # Handle datetime object
         return dt.strftime('%Y-%m-%d %H:%M:%S UTC')
     return 'N/A'
 
