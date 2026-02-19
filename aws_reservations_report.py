@@ -220,6 +220,13 @@ def main():
         all_reservations = []
         regions_with_data = set()
         
+        # Get Savings Plans once (they're account-level, not region-specific)
+        print("\nChecking for Savings Plans (account-level)...")
+        savings_plans = get_savings_plans(session, 'us-east-1')
+        if savings_plans:
+            print(f"  Found {len(savings_plans)} Savings Plan(s)")
+            all_reservations.extend(savings_plans)
+        
         for region in regions:
             print(f"\nChecking region: {region}")
             region_reservations = []
@@ -231,10 +238,6 @@ def main():
             # Get RDS Reserved Instances
             rds_reservations = get_rds_reserved_instances(session, region)
             region_reservations.extend(rds_reservations)
-            
-            # Get Savings Plans
-            savings_plans = get_savings_plans(session, region)
-            region_reservations.extend(savings_plans)
             
             if region_reservations:
                 regions_with_data.add(region)
